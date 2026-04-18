@@ -1,0 +1,74 @@
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  background: linear-gradient(135deg, #1a1a2e, #5f0f40, #3a86ff);
+}
+
+body {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column; 
+  color:  #eaf6ff;
+}
+
+.carta_button {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+}
+
+.carta_button {
+  display: flex;
+  flex-direction: column;
+  align-items: center;     /* Центрує кнопки горизонтально */
+  justify-content: center; /* Центрує кнопки вертикально */
+  height: 100vh;           /* Займає всю висоту екрану */
+  width: 100%;
+}
+
+.carta_button > div {
+  display: flex;
+  justify-content: center; /* Центрує кнопки горизонтально */
+  align-items: center;     /* Центрує кнопки по висоті в ряду */
+  width: 100%;
+  margin-bottom: 10px;
+}
+
+.carta_button button {
+  flex: 1 1 0;
+  margin: 0 5px;
+  width: 100%;
+  max-width: 250px;
+  min-width: 0;
+  box-sizing: border-box;
+  font-weight: bold;       /* Робить текст жирним */
+  font-size: 1.2rem;
+  display: flex;
+  justify-content: center; /* Центрує текст кнопки по горизонталі */
+  align-items: center;     /* Центрує текст кнопки по вертикалі */
+  height: 60px;            /* Задає висоту для кращого вертикального центрування */
+}
+
+.carta_button button {
+  border-radius: 20px;
+  color: #eaf6ff;
+  background-color: rgba(135, 206, 250, 0.65);
+  padding: 20px;
+
+  border: 1px solid rgba(255,255,255,0.4);
+  backdrop-filter: blur(8px);
+  box-shadow: 
+    0 10px 25px rgba(0, 120, 200, 0.25),
+    inset 0 1px 0 rgba(255,255,255,0.4);
+
+  transition: all 0.25s ease;
+}
+.carta_button button:hover {
+  transform: translateY(-2px);
+  box-shadow: 
+    0 14px 35px rgba(0, 120, 200, 0.35),
+    inset 0 1px 0 rgba(255,255,255,0.5);
+}
