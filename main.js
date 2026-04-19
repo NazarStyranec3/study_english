@@ -8,39 +8,45 @@ function startGame() {
 
     const word_fool = [
         ['робота','work'],
-        ['зміна','shift'],
-        ['начальник','boss'],
-        ['клієнт','customer'],
-        ['товар','stock'],
-        ['склад','warehouse'],
-        ['полиця','shelf'],
-        ['коробка','box'],
-        ['замовлення','order'],
-        ['доставка','delivery'],
-    
-        ['каса','cash register'],
-        ['ціна','price'],
-        ['знижка','discount'],
-        ['оплата','payment'],
-        ['квиток','ticket'],
-    
-        ['працівник','employee'],
         ['група','group'],
-        ['співробітник','staff'],
-        ['керівник','supervisor'],
         ['офіс','office'],
-    
-        ['швидко','fast'],
-        ['повільно','slow'],
-        ['зайнятий','busy'],
-        ['втомлений','tired'],
-        ['готовий','ready'],
-    
-        ['ранок','morning'],
-        ['вечір','evening'],
-        ['день','day'],
+        ['співробітник','staff'],
+        ['товар','stock'],
         ['тиждень','week'],
-        ['час','time']
+        // ['робота','work'],
+        // ['зміна','shift'],
+        // ['начальник','boss'],
+        // ['клієнт','customer'],
+        // ['товар','stock'],
+        // ['склад','warehouse'],
+        // ['полиця','shelf'],
+        // ['коробка','box'],
+        // ['замовлення','order'],
+        // ['доставка','delivery'],
+    
+        // ['каса','cash register'],
+        // ['ціна','price'],
+        // ['знижка','discount'],
+        // ['оплата','payment'],
+        // ['квиток','ticket'],
+    
+        // ['працівник','employee'],
+        // ['група','group'],
+        // ['співробітник','staff'],
+        // ['керівник','supervisor'],
+        // ['офіс','office'],
+    
+        // ['швидко','fast'],
+        // ['повільно','slow'],
+        // ['зайнятий','busy'],
+        // ['втомлений','tired'],
+        // ['готовий','ready'],
+    
+        // ['ранок','morning'],
+        // ['вечір','evening'],
+        // ['день','day'],
+        // ['тиждень','week'],
+        // ['час','time']
     ];
 
     // нові 6 слів
@@ -66,7 +72,7 @@ function startGame() {
         document.getElementById(`button_${i+1}_2`).style.backgroundColor = "";
         document.getElementById(`button_${i+1}_1`).disabled = false;
         document.getElementById(`button_${i+1}_2`).disabled = false;
-
+        audio(`audio_${i+1}`,'words_eng[i]')
         const b_1 = document.getElementById(`button_${i+1}_1`);
         const b_2 = document.getElementById(`button_${i+1}_2`);
 
@@ -136,11 +142,29 @@ function click_button(choose_button, buttonId, word, words_list){
         }, 50);
     }
 }
+function audio_adn_text(audio){
+    if (audio === false) {
+        const playerWrappers = document.querySelectorAll('.player-wrapper');
+        playerWrappers.forEach(wrapper => {
+            wrapper.style.display = "none";
+        });
+        return; // Не ініціалізуємо wavesurfer, не виводимо плеєр
+   
+    }
+    else{
+        for (let i = 1; i < 7; i++) {
+            console.log(i);
+            const playerWrapper = document.getElementById(`button_${i}_2`);
+            playerWrapper.style.display = "none";
+        }
+        return; // Не ініціалізуємо wavesurfer, не виводимо плеєр
+    }
+}
 
-function audio(){
-        
+function audio(id, audio_name){
+
         const wavesurfer = WaveSurfer.create({
-        container: '#waveform',
+        container: `#${id}`,
         waveColor: 'rgba(255, 255, 255, 0.3)',
         progressColor: '#3390ec',
         cursorWidth: 0,
@@ -149,7 +173,7 @@ function audio(){
         barRadius: 3,
         height: 50,
         backend: 'MediaElement',
-        url: 'audio/audio_week.mp3', // Перевір, щоб файл був тут!
+        url: `audio/audio_${audio_name}.mp3`, // Перевір, щоб файл був тут!
     });
 
     // 2. Отримуємо елементи
@@ -184,7 +208,7 @@ function audio(){
 };
 
 document.addEventListener('DOMContentLoaded', function() {
-
+    audio_adn_text(Math.random() < 0.5)
     startGame()
 
     for (let row = 1; row <= 6; row++) {
@@ -196,7 +220,7 @@ document.addEventListener('DOMContentLoaded', function() {
             });
         }
     }
-    audio()
+    
 });
 
 
