@@ -3,7 +3,7 @@ let week = false;
 let current_name_cleanin
 var choose_button = []
 let words = [];
-
+let wavesurfer;
 function startGame() {
 
     const word_fool = [
@@ -138,7 +138,7 @@ function click_button(choose_button, buttonId, word, words_list){
 }
 
 function audio(){
-
+        
         const wavesurfer = WaveSurfer.create({
         container: '#waveform',
         waveColor: 'rgba(255, 255, 255, 0.3)',
