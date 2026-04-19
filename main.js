@@ -72,7 +72,7 @@ function startGame() {
         document.getElementById(`button_${i+1}_2`).style.backgroundColor = "";
         document.getElementById(`button_${i+1}_1`).disabled = false;
         document.getElementById(`button_${i+1}_2`).disabled = false;
-        audio(`audio_${i+1}`, words_eng[i])
+        audio(`audio_${i+1}`, words_eng[i], i+1);
         const b_1 = document.getElementById(`button_${i+1}_1`);
         const b_2 = document.getElementById(`button_${i+1}_2`);
 
@@ -133,6 +133,7 @@ function click_button(choose_button, buttonId, word, words_list){
                 // 🔥 ПЕРЕВІРКА ВИГРАШУ
                 if (words.length === 0) {
                     setTimeout(() => {
+                        audio_adn_text(Math.random() < 0.5)
                         startGame(); 
                     }, 30);
                 }
@@ -144,26 +145,35 @@ function click_button(choose_button, buttonId, word, words_list){
 }
 function audio_adn_text(audio){
     if (audio === false) {
-        const playerWrappers = document.querySelectorAll('.player-wrapper');
-        playerWrappers.forEach(wrapper => {
+        const playerWrappers_audi = document.querySelectorAll('.player-wrapper');
+        playerWrappers_audi.forEach(wrapper => {
             wrapper.style.display = "none";
         });
+        for (let i = 1; i < 7; i++) {
+            console.log(i);
+            const playerWrapper_text = document.getElementById(`button_${i}_2`);
+            playerWrapper_text.style.display = "";
+        }
         return; // Не ініціалізуємо wavesurfer, не виводимо плеєр
    
     }
     else{
         for (let i = 1; i < 7; i++) {
             console.log(i);
-            const playerWrapper = document.getElementById(`button_${i}_2`);
-            playerWrapper.style.display = "none";
+            const playerWrapper_text = document.getElementById(`button_${i}_2`);
+            playerWrapper_text.style.display = "none";
         }
+        const playerWrappers_audi = document.querySelectorAll('.player-wrapper');
+        playerWrappers_audi.forEach(wrapper => {
+            wrapper.style.display = "";
+        });
         return; // Не ініціалізуємо wavesurfer, не виводимо плеєр
     }
 }
 
-function audio(id, audio_name){
+function audio(id, audio_name, index) {
 
-        wavesurfer = WaveSurfer.create({
+    const ws = WaveSurfer.create({
         container: `#${id}`,
         waveColor: 'rgba(255, 255, 255, 0.3)',
         progressColor: '#3390ec',
@@ -173,39 +183,41 @@ function audio(id, audio_name){
         barRadius: 3,
         height: 50,
         backend: 'MediaElement',
-        url: `audio/audio_${audio_name}.mp3`, // Перевір, щоб файл був тут!
+        url: `audio/audio_${audio_name}.mp3`,
     });
 
-    // // 2. Отримуємо елементи
-    // const playBtn = document.getElementById('playPauseBtn');
-    // const icon = document.getElementById('icon');
+    // 🔥 автоплей коли завантажилось
+    ws.on('ready', () => {
+        ws.play();
+    });
 
-    // // 3. Відслідковування кліку (додаємо лог для перевірки в консолі)
-    // playBtn.addEventListener('click', function() {
-    //     console.log("Кнопку натиснуто!"); // Якщо це з'явиться в консолі (F12) — клік працює
-    //     wavesurfer.playPause();
-    // });
+    ws.on('error', (err) => {
+        console.error("Audio error:", err);
+    });
 
-    // // 4. Зміна іконок
-    // wavesurfer.on('play', () => {
-    //     icon.textContent = '⏸';
-    // });
+    // 🎧 кнопка для цього конкретного аудіо
+    const playBtn = document.getElementById(`playPauseBtn_${index}`);
+    const icon = document.getElementById(`icon_${index}`);
 
-    // wavesurfer.on('pause', () => {
-    //     icon.textContent = '▶';
-    // });
+    if (playBtn && icon) {
+        playBtn.addEventListener('click', function () {
+            ws.playPause();
+        });
 
-    // // Повернення на початок після завершення
-    // wavesurfer.on('finish', () => {
-    //     icon.textContent = '▶';
-    //     wavesurfer.setTime(0); 
-    // });
+        ws.on('play', () => {
+            icon.textContent = '⏸';
+        });
 
-    // // Перевірка на помилку завантаження файлу
-    // wavesurfer.on('error', (err) => {
-    //     console.error("Помилка WaveSurfer:", err);
-    // });
-};
+        ws.on('pause', () => {
+            icon.textContent = '▶';
+        });
+
+        ws.on('finish', () => {
+            icon.textContent = '▶';
+            ws.seekTo(0);
+        });
+    }
+}
 
 document.addEventListener('DOMContentLoaded', function() {
     audio_adn_text(Math.random() < 0.5)
