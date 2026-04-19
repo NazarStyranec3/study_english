@@ -72,7 +72,7 @@ function startGame() {
         document.getElementById(`button_${i+1}_2`).style.backgroundColor = "";
         document.getElementById(`button_${i+1}_1`).disabled = false;
         document.getElementById(`button_${i+1}_2`).disabled = false;
-        audio(`audio_${i+1}`,'words_eng[i]')
+        audio(`audio_${i+1}`, words_eng[i])
         const b_1 = document.getElementById(`button_${i+1}_1`);
         const b_2 = document.getElementById(`button_${i+1}_2`);
 
@@ -163,7 +163,7 @@ function audio_adn_text(audio){
 
 function audio(id, audio_name){
 
-        const wavesurfer = WaveSurfer.create({
+        wavesurfer = WaveSurfer.create({
         container: `#${id}`,
         waveColor: 'rgba(255, 255, 255, 0.3)',
         progressColor: '#3390ec',
@@ -176,35 +176,35 @@ function audio(id, audio_name){
         url: `audio/audio_${audio_name}.mp3`, // Перевір, щоб файл був тут!
     });
 
-    // 2. Отримуємо елементи
-    const playBtn = document.getElementById('playPauseBtn');
-    const icon = document.getElementById('icon');
+    // // 2. Отримуємо елементи
+    // const playBtn = document.getElementById('playPauseBtn');
+    // const icon = document.getElementById('icon');
 
-    // 3. Відслідковування кліку (додаємо лог для перевірки в консолі)
-    playBtn.addEventListener('click', function() {
-        console.log("Кнопку натиснуто!"); // Якщо це з'явиться в консолі (F12) — клік працює
-        wavesurfer.playPause();
-    });
+    // // 3. Відслідковування кліку (додаємо лог для перевірки в консолі)
+    // playBtn.addEventListener('click', function() {
+    //     console.log("Кнопку натиснуто!"); // Якщо це з'явиться в консолі (F12) — клік працює
+    //     wavesurfer.playPause();
+    // });
 
-    // 4. Зміна іконок
-    wavesurfer.on('play', () => {
-        icon.textContent = '⏸';
-    });
+    // // 4. Зміна іконок
+    // wavesurfer.on('play', () => {
+    //     icon.textContent = '⏸';
+    // });
 
-    wavesurfer.on('pause', () => {
-        icon.textContent = '▶';
-    });
+    // wavesurfer.on('pause', () => {
+    //     icon.textContent = '▶';
+    // });
 
-    // Повернення на початок після завершення
-    wavesurfer.on('finish', () => {
-        icon.textContent = '▶';
-        wavesurfer.setTime(0); 
-    });
+    // // Повернення на початок після завершення
+    // wavesurfer.on('finish', () => {
+    //     icon.textContent = '▶';
+    //     wavesurfer.setTime(0); 
+    // });
 
-    // Перевірка на помилку завантаження файлу
-    wavesurfer.on('error', (err) => {
-        console.error("Помилка WaveSurfer:", err);
-    });
+    // // Перевірка на помилку завантаження файлу
+    // wavesurfer.on('error', (err) => {
+    //     console.error("Помилка WaveSurfer:", err);
+    // });
 };
 
 document.addEventListener('DOMContentLoaded', function() {
