@@ -37,7 +37,7 @@ body {
   margin-bottom: 10px;
 }
 
-.carta_button button {
+.button_text {
   flex: 1 1 0;
   margin: 0 5px;
   width: 100%;
@@ -52,7 +52,7 @@ body {
   height: 60px;            /* Задає висоту для кращого вертикального центрування */
 }
 
-.carta_button button {
+.button_text {
   border-radius: 20px;
   color: #eaf6ff;
   background-color: rgba(135, 206, 250, 0.65);
@@ -66,7 +66,7 @@ body {
 
   transition: all 0.25s ease;
 }
-.carta_button button:hover {
+.button_text:hover {
   transform: translateY(-2px);
   box-shadow: 
     0 14px 35px rgba(0, 120, 200, 0.35),
