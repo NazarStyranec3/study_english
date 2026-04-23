@@ -12,7 +12,9 @@ function startGame() {
         ['офіс','office'],
         ['співробітник','staff'],
         ['товар','stock'],
-        ['тиждень','week'],
+        ['тиждень','week']
+
+
         // ['робота','work'],
         // ['зміна','shift'],
         // ['начальник','boss'],
@@ -80,12 +82,13 @@ function startGame() {
         b_1.style.pointerEvents = "auto";
         b_2.style.backgroundColor = "";
         b_2.style.pointerEvents = "auto";
-   
+        
     }
 }
 
 function click_button(choose_button, buttonId, word, words_list){
     const btn = document.getElementById(buttonId);
+
 
     choose_button.push({ word: word, id: buttonId });
 
@@ -133,7 +136,7 @@ function click_button(choose_button, buttonId, word, words_list){
                 // 🔥 ПЕРЕВІРКА ВИГРАШУ
                 if (words.length === 0) {
                     setTimeout(() => {
-                        audio_adn_text(Math.random() < 0.5)
+                        // audio_adn_text(Math.random() < 0.5)
                         startGame(); 
                     }, 30);
                 }
@@ -186,45 +189,37 @@ function audio(id, audio_name, index) {
         url: `audio/audio_${audio_name}.mp3`,
     });
 
-    // 🔥 автоплей коли завантажилось
-    ws.on('ready', () => {
-        ws.play();
-    });
-
-    ws.on('error', (err) => {
-        console.error("Audio error:", err);
-    });
-
-    // 🎧 кнопка для цього конкретного аудіо
     const playBtn = document.getElementById(`playPauseBtn_${index}`);
     const icon = document.getElementById(`icon_${index}`);
 
-    if (playBtn && icon) {
-        playBtn.addEventListener('click', function () {
-            ws.playPause();
-        });
+    if (!playBtn || !icon) return;
 
-        ws.on('play', () => {
-            icon.textContent = '⏸';
-        });
+    // ❗ ВАЖЛИВО: тут ТІЛЬКИ керування аудіо
+    playBtn.addEventListener('click', () => {
+        ws.playPause();
+    });
 
-        ws.on('pause', () => {
-            icon.textContent = '▶';
-        });
+    ws.on('play', () => {
+        icon.textContent = '⏸';
+    });
 
-        ws.on('finish', () => {
-            icon.textContent = '▶';
-            ws.seekTo(0);
-        });
-    }
+    ws.on('pause', () => {
+        icon.textContent = '▶';
+    });
+
+    ws.on('finish', () => {
+        icon.textContent = '▶';
+        ws.seekTo(0);
+    });
 }
 
 document.addEventListener('DOMContentLoaded', function() {
-    audio_adn_text(Math.random() < 0.5)
+    // audio_adn_text(Math.random() < 0.5)
+    audio_adn_text(true)
     startGame()
 
     for (let row = 1; row <= 6; row++) {
-        for (let col = 1; col <= 2; col++) {
+        for (let col = 1; col <= 3; col++) {
             let buttonId = `button_${row}_${col}`;
             document.getElementById(buttonId).addEventListener('click', function() {
                 click_button(choose_button, buttonId, this.textContent, words);
