@@ -228,11 +228,9 @@ document.addEventListener('DOMContentLoaded', function() {
 
                 if (this.classList.contains('player-wrapper')) {
                     dataType = 'audio';
-                    alert(words_eng[row-1]);
                     click_button(choose_button, buttonId, words_eng[row-1], words);
                 } else {
                     dataType = 'unknown';
-                    alert(this.textContent);
                     click_button(choose_button, buttonId, this.textContent, words);
                 }
                 
