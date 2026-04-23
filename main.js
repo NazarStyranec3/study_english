@@ -4,6 +4,8 @@ let current_name_cleanin
 var choose_button = []
 let words = [];
 let wavesurfer;
+let words_ukr = [];
+let words_eng = [];
 function startGame() {
 
     const word_fool = [
@@ -54,8 +56,7 @@ function startGame() {
     // нові 6 слів
     words = word_fool.sort(() => Math.random() - 0.5).slice(0, 6);
 
-    let words_ukr = [];
-    let words_eng = [];
+
 
     for (let i = 0; i < words.length; i++) {
         words_ukr.push(words[i][0]);
@@ -91,7 +92,7 @@ function click_button(choose_button, buttonId, word, words_list){
 
 
     choose_button.push({ word: word, id: buttonId });
-
+    
     btn.style.backgroundColor = "#82ca9d";
 
     if (choose_button.length === 2) {
@@ -222,7 +223,20 @@ document.addEventListener('DOMContentLoaded', function() {
         for (let col = 1; col <= 3; col++) {
             let buttonId = `button_${row}_${col}`;
             document.getElementById(buttonId).addEventListener('click', function() {
-                click_button(choose_button, buttonId, this.textContent, words);
+                let dataType;
+
+
+                if (this.classList.contains('player-wrapper')) {
+                    dataType = 'audio';
+                    alert(words_eng[row-1]);
+                    click_button(choose_button, buttonId, words_eng[row-1], words);
+                } else {
+                    dataType = 'unknown';
+                    alert(this.textContent);
+                    click_button(choose_button, buttonId, this.textContent, words);
+                }
+                
+                
            
             });
         }
