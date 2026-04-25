@@ -151,7 +151,16 @@ function click_button(choose_button, buttonId, word, words_list){
                 }
 
                 // 🔥 ПЕРЕВІРКА ВИГРАШУ
-
+                if (words.length === 0) {
+                    setTimeout(() => {
+                        // audio_adn_text(Math.random() < 0.5)
+                        wavesurfers.forEach(ws => {
+                            ws.destroy();
+                        });
+                        wavesurfers = [];
+                        startGame(); 
+                    }, 30);
+                }
             }
 
             choose_button.length = 0;
