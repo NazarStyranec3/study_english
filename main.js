@@ -7,7 +7,8 @@ let wavesurfer;
 let words_ukr = [];
 let words_eng = [];
 function startGame() {
-
+    words_ukr = [];
+    words_eng = [];
     const word_fool = [
         ['робота','work'],
         ['група','group'],
@@ -75,7 +76,6 @@ function startGame() {
         document.getElementById(`button_${i+1}_2`).style.backgroundColor = "";
         document.getElementById(`button_${i+1}_1`).disabled = false;
         document.getElementById(`button_${i+1}_2`).disabled = false;
-        audio(`audio_${i+1}`, words_eng[i], i+1);
         const b_1 = document.getElementById(`button_${i+1}_1`);
         const b_2 = document.getElementById(`button_${i+1}_2`);
         const b_3 = document.getElementById(`button_${i+1}_3`); 
