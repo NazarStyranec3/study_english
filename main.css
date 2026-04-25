@@ -53,11 +53,12 @@ body {
 }
 
 .button_text {
+  width: 250px;
+  height: 85px;
   border-radius: 20px;
   color: #eaf6ff;
   background-color: rgba(135, 206, 250, 0.65);
   padding: 20px;
-
   border: 1px solid rgba(255,255,255,0.4);
   backdrop-filter: blur(8px);
   box-shadow: 
@@ -74,14 +75,15 @@ body {
 }
 
 .audio-card {
+  height: 85px;
   display: flex;
   align-items: center;
   background: rgba(255, 255, 255, 0.1); /* Скляний ефект */
   backdrop-filter: blur(12px);
-  padding: 15px 25px;
-  border-radius: 50px;
+  padding: 20px;
+  border-radius: 20px;
   width: 250px;
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  border: 1px solid rgba(255,255,255,0.4);
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
 }
 

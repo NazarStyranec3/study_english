@@ -78,12 +78,19 @@ function startGame() {
         audio(`audio_${i+1}`, words_eng[i], i+1);
         const b_1 = document.getElementById(`button_${i+1}_1`);
         const b_2 = document.getElementById(`button_${i+1}_2`);
+        const b_3 = document.getElementById(`button_${i+1}_3`); 
 
         b_1.style.backgroundColor = "";
         b_1.style.pointerEvents = "auto";
         b_2.style.backgroundColor = "";
         b_2.style.pointerEvents = "auto";
         
+        if (b_3) {
+            b_3.style.backgroundColor = "";
+            b_3.style.pointerEvents = "auto";
+        }
+
+        audio(`audio_${i+1}`, words_eng[i], i+1);
     }
 }
 
@@ -226,7 +233,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 let dataType;
 
 
-                if (this.classList.contains('player-wrapper')) {
+                if (this.closest('.player-wrapper')) {
                     dataType = 'audio';
                     click_button(choose_button, buttonId, words_eng[row-1], words);
                 } else {
