@@ -6,7 +6,16 @@ let words = [];
 let wavesurfer;
 let words_ukr = [];
 let words_eng = [];
+let wavesurfers = [];
 function startGame() {
+    wavesurfers.forEach(ws => {
+        try {
+            ws.stop();     // ⛔ зупини звук
+            ws.destroy();  // 💀 видали
+        } catch(e) {}
+    });
+    wavesurfers = [];
+
     words_ukr = [];
     words_eng = [];
     const word_fool = [
@@ -58,7 +67,7 @@ function startGame() {
     words = word_fool.sort(() => Math.random() - 0.5).slice(0, 6);
 
 
-
+    
     for (let i = 0; i < words.length; i++) {
         words_ukr.push(words[i][0]);
         words_eng.push(words[i][1]);
@@ -142,12 +151,7 @@ function click_button(choose_button, buttonId, word, words_list){
                 }
 
                 // 🔥 ПЕРЕВІРКА ВИГРАШУ
-                if (words.length === 0) {
-                    setTimeout(() => {
-                        // audio_adn_text(Math.random() < 0.5)
-                        startGame(); 
-                    }, 30);
-                }
+
             }
 
             choose_button.length = 0;
@@ -183,7 +187,7 @@ function audio_adn_text(audio){
 }
 
 function audio(id, audio_name, index) {
-
+    
     const ws = WaveSurfer.create({
         container: `#${id}`,
         waveColor: 'rgba(255, 255, 255, 0.3)',
@@ -196,7 +200,7 @@ function audio(id, audio_name, index) {
         backend: 'MediaElement',
         url: `audio/audio_${audio_name}.mp3`,
     });
-
+    wavesurfers.push(ws); // ✅ важливо
     const playBtn = document.getElementById(`playPauseBtn_${index}`);
     const icon = document.getElementById(`icon_${index}`);
 
