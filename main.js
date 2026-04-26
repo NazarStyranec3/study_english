@@ -15,7 +15,6 @@ function startGame() {
         } catch(e) {}
     });
     wavesurfers = [];
-
     words_ukr = [];
     words_eng = [];
     const word_fool = [
