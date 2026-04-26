@@ -260,15 +260,25 @@ function audio(id, audio_name, index) {
     });
 
 
-    ws.on('play', () => icon.textContent = '⏸');
-    ws.on('pause', () => icon.textContent = '▶');
+    ws.on('pause', () => {
+        icon.textContent = '▶';
+    });
+
+    ws.on('finish', () => {
+        icon.textContent = '▶';
+        ws.seekTo(0);
+
+        if (activeWave === ws) {
+            activeWave = null;
+        }
+    });
 
     ws.on('ready', () => {
         timeEl.textContent = `0:00 / ${formatTime(ws.getDuration())}`;
     });
 
     ws.on('audioprocess', () => {
-        timeEl.textContent =
+        timeEl.textContent = 
             `${formatTime(ws.getCurrentTime())} / ${formatTime(ws.getDuration())}`;
     });
     ws.on('timeupdate', (currentTime) => {
