@@ -225,16 +225,15 @@ function audio(id, audio_name, index) {
     
     const ws = WaveSurfer.create({
         container: `#${id}`,
-        waveColor: 'rgba(255, 255, 255, 0.6)',
+        waveColor: 'rgba(255, 255, 255, 0.3)',
         progressColor: '#3390ec',
         cursorWidth: 0,
         barWidth: 2,
         barGap: 2,
         barRadius: 2,
         height: 50,
-        backend: 'WebAudio',
+        backend: 'MediaElement',
         url: `audio/audio_${audio_name}.mp3`,
-        normalize: true,
     });
     wavesurfers.push(ws); // ✅ важливо
     const playBtn = document.getElementById(`playPauseBtn_${index}`);
@@ -259,6 +258,10 @@ function audio(id, audio_name, index) {
         activeWave = ws;
     });
 
+    ws.on('play', () => {
+        icon.textContent = '⏸';
+        activeWave = ws;
+    });
 
     ws.on('pause', () => {
         icon.textContent = '▶';
@@ -280,16 +283,6 @@ function audio(id, audio_name, index) {
     ws.on('audioprocess', () => {
         timeEl.textContent = 
             `${formatTime(ws.getCurrentTime())} / ${formatTime(ws.getDuration())}`;
-    });
-    ws.on('timeupdate', (currentTime) => {
-        const duration = ws.getDuration();
-    
-        timeEl.textContent =
-            `${formatTime(currentTime)} / ${formatTime(duration)}`;
-    });
-    ws.on('ready', () => {
-        ws.seekTo(0);
-        ws.pause();
     });
 }
 
@@ -320,8 +313,3 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     
 });
-
-
-
-
-
