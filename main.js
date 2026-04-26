@@ -225,14 +225,14 @@ function audio(id, audio_name, index) {
     
     const ws = WaveSurfer.create({
         container: `#${id}`,
-        waveColor: 'rgba(255, 255, 255, 0.3)',
+        waveColor: 'rgba(255, 255, 255, 0.6)',
         progressColor: '#3390ec',
         cursorWidth: 0,
         barWidth: 2,
         barGap: 2,
         barRadius: 2,
         height: 50,
-        backend: 'MediaElement',
+        backend: 'WebAudio',
         url: `audio/audio_${audio_name}.mp3`,
     });
     wavesurfers.push(ws); // ✅ важливо
@@ -258,30 +258,16 @@ function audio(id, audio_name, index) {
         activeWave = ws;
     });
 
-    ws.on('play', () => {
-        icon.textContent = '⏸';
-        activeWave = ws;
-    });
 
-    ws.on('pause', () => {
-        icon.textContent = '▶';
-    });
-
-    ws.on('finish', () => {
-        icon.textContent = '▶';
-        ws.seekTo(0);
-
-        if (activeWave === ws) {
-            activeWave = null;
-        }
-    });
+    ws.on('play', () => icon.textContent = '⏸');
+    ws.on('pause', () => icon.textContent = '▶');
 
     ws.on('ready', () => {
         timeEl.textContent = `0:00 / ${formatTime(ws.getDuration())}`;
     });
 
     ws.on('audioprocess', () => {
-        timeEl.textContent = 
+        timeEl.textContent =
             `${formatTime(ws.getCurrentTime())} / ${formatTime(ws.getDuration())}`;
     });
 }

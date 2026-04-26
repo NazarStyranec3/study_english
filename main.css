@@ -115,23 +115,12 @@ body {
   margin-left: 20px;
   cursor: pointer;
 }
-.audio-card {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  background: #1f1f1f;
-  padding: 10px;
-  border-radius: 14px;
-  width: 100%;
-}
-
-#waveform, div[id^="audio_"] {
+#audio_1,
+#audio_2,
+#audio_3,
+#audio_4,
+#audio_5,
+#audio_6 {
   flex: 1;
-}
-
-.time {
-  font-size: 12px;
-  color: #aaa;
-  min-width: 70px;
-  text-align: right;
+  height: 40px;
 }
