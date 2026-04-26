@@ -234,6 +234,7 @@ function audio(id, audio_name, index) {
         height: 50,
         backend: 'WebAudio',
         url: `audio/audio_${audio_name}.mp3`,
+        normalize: true,
     });
     wavesurfers.push(ws); // ✅ важливо
     const playBtn = document.getElementById(`playPauseBtn_${index}`);
@@ -269,6 +270,16 @@ function audio(id, audio_name, index) {
     ws.on('audioprocess', () => {
         timeEl.textContent =
             `${formatTime(ws.getCurrentTime())} / ${formatTime(ws.getDuration())}`;
+    });
+    ws.on('timeupdate', (currentTime) => {
+        const duration = ws.getDuration();
+    
+        timeEl.textContent =
+            `${formatTime(currentTime)} / ${formatTime(duration)}`;
+    });
+    ws.on('ready', () => {
+        ws.seekTo(0);
+        ws.pause();
     });
 }
 
