@@ -7,6 +7,8 @@ let wavesurfer;
 let words_ukr = [];
 let words_eng = [];
 let wavesurfers = [];
+let activeWave = null;
+
 function startGame() {
     wavesurfers.forEach(ws => {
         try {
@@ -236,16 +238,29 @@ function audio(id, audio_name, index) {
     wavesurfers.push(ws); // ✅ важливо
     const playBtn = document.getElementById(`playPauseBtn_${index}`);
     const icon = document.getElementById(`icon_${index}`);
-
-    if (!playBtn || !icon) return;
-
-    // ❗ ВАЖЛИВО: тут ТІЛЬКИ керування аудіо
+    const timeEl = document.getElementById(`time_${index}`);
     playBtn.addEventListener('click', () => {
+
+        // 🔥 ГОЛОВНЕ: стопаємо інші аудіо
+        if (activeWave && activeWave !== ws) {
+            activeWave.pause();
+            activeWave.seekTo(0);
+
+            // повертаємо іконку попереднього
+            const prevIndex = wavesurfers.indexOf(activeWave) + 1;
+            const prevIcon = document.getElementById(`icon_${prevIndex}`);
+            if (prevIcon) prevIcon.textContent = '▶';
+        }
+
         ws.playPause();
+
+        // встановлюємо активний
+        activeWave = ws;
     });
 
     ws.on('play', () => {
         icon.textContent = '⏸';
+        activeWave = ws;
     });
 
     ws.on('pause', () => {
@@ -255,6 +270,19 @@ function audio(id, audio_name, index) {
     ws.on('finish', () => {
         icon.textContent = '▶';
         ws.seekTo(0);
+
+        if (activeWave === ws) {
+            activeWave = null;
+        }
+    });
+
+    ws.on('ready', () => {
+        timeEl.textContent = `0:00 / ${formatTime(ws.getDuration())}`;
+    });
+
+    ws.on('audioprocess', () => {
+        timeEl.textContent = 
+            `${formatTime(ws.getCurrentTime())} / ${formatTime(ws.getDuration())}`;
     });
 }
 
