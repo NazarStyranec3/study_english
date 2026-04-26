@@ -135,7 +135,7 @@ function click_button(choose_button, buttonId, word, words_list){
 
     choose_button.push({ word: word, id: buttonId });
     
-    btn.style.backgroundColor = " #181f284b;";
+    btn.style.backgroundColor = " #181f284b";
 
     if (choose_button.length === 2) {
 
