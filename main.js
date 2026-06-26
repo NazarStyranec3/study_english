@@ -11,6 +11,13 @@ let activeWave = null;
 let activeSentence = null;
 let activeSentenceBtn = null;
 
+function formatTime(seconds) {
+    if (!isFinite(seconds) || seconds < 0) return '0:00';
+    const m = Math.floor(seconds / 60);
+    const s = Math.floor(seconds % 60);
+    return `${m}:${s.toString().padStart(2, '0')}`;
+}
+
 function startGame() {
     wavesurfers.forEach(ws => {
         try {
@@ -234,8 +241,9 @@ function audio_adn_text(audio){
 }
 
 function audio(id, audio_name, index) {
-    
-    const ws = WaveSurfer.create({
+
+    const isLocalFile = location.protocol === 'file:';
+    const wsOpts = {
         container: `#${id}`,
         waveColor: 'rgba(255, 255, 255, 0.3)',
         progressColor: '#3390ec',
@@ -244,14 +252,29 @@ function audio(id, audio_name, index) {
         barGap: 2,
         barRadius: 2,
         height: 50,
-        backend: 'MediaElement',
-        url: `audio/audio_${audio_name}.mp3`,
-    });
+    };
+
+    if (isLocalFile) {
+        // file:// blocks fetch() → feed an <audio> element directly so
+        // WaveSurfer never calls fetch. peaks/duration are placeholders;
+        // playback still drives the progress bar via the media element.
+        const audioEl = new Audio(`audio/audio_${audio_name}.mp3`);
+        audioEl.preload = 'metadata';
+        wsOpts.media = audioEl;
+        wsOpts.peaks = [new Array(200).fill(0.5)];
+        wsOpts.duration = 1;
+    } else {
+        wsOpts.backend = 'MediaElement';
+        wsOpts.url = `audio/audio_${audio_name}.mp3`;
+    }
+
+    const ws = WaveSurfer.create(wsOpts);
     wavesurfers.push(ws); // ✅ важливо
     const playBtn = document.getElementById(`playPauseBtn_${index}`);
     const icon = document.getElementById(`icon_${index}`);
     const timeEl = document.getElementById(`time_${index}`);
-    playBtn.addEventListener('click', () => {
+    playBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
 
         // 🔥 ГОЛОВНЕ: стопаємо інші аудіо
         if (activeWave && activeWave !== ws) {
