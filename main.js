@@ -8,6 +8,8 @@ let words_ukr = [];
 let words_eng = [];
 let wavesurfers = [];
 let activeWave = null;
+let activeSentence = null;
+let activeSentenceBtn = null;
 
 function startGame() {
     wavesurfers.forEach(ws => {
@@ -85,7 +87,17 @@ function startGame() {
 
         ['запитувати','ask'],
         ['відповідати','answer'],
-        ['казати','say']
+        ['казати','say'],
+
+        ['досягати','achieve'],
+        ['покращувати','improve'],
+        ['вирішувати','decide'],
+        ['пропонувати','suggest'],
+        ['помилка','mistake'],
+        ['можливість','opportunity'],
+        ['впевнений','confident'],
+        ['однак','however'],
+        ['хоча','although']
 
     ];
 
@@ -281,9 +293,63 @@ function audio(id, audio_name, index) {
     });
 
     ws.on('audioprocess', () => {
-        timeEl.textContent = 
+        timeEl.textContent =
             `${formatTime(ws.getCurrentTime())} / ${formatTime(ws.getDuration())}`;
     });
+
+    attachSentenceButton(index, audio_name);
+}
+
+function attachSentenceButton(index, audio_name) {
+    const card = document.getElementById(`button_${index}_3`);
+    if (!card) return;
+
+    let sentBtn = card.querySelector('.sentence-btn');
+    if (!sentBtn) {
+        sentBtn = document.createElement('button');
+        sentBtn.type = 'button';
+        sentBtn.className = 'sentence-btn';
+        sentBtn.textContent = '♪'; // ♪
+        sentBtn.title = 'Listen to example sentence';
+        card.appendChild(sentBtn);
+        sentBtn.addEventListener('click', (e) => e.stopPropagation());
+    }
+
+    const sentAudio = new Audio(`audio/sentence_${audio_name}.mp3`);
+    sentAudio.preload = 'metadata';
+
+    sentBtn.style.display = '';
+    sentBtn.classList.remove('playing');
+
+    sentAudio.addEventListener('error', () => {
+        sentBtn.style.display = 'none';
+    });
+    sentAudio.addEventListener('ended', () => {
+        sentBtn.classList.remove('playing');
+        if (activeSentence === sentAudio) {
+            activeSentence = null;
+            activeSentenceBtn = null;
+        }
+    });
+
+    sentBtn.onclick = (e) => {
+        e.stopPropagation();
+        if (activeWave) {
+            activeWave.pause();
+            activeWave.seekTo(0);
+        }
+        if (activeSentence && activeSentence !== sentAudio) {
+            activeSentence.pause();
+            activeSentence.currentTime = 0;
+            if (activeSentenceBtn) activeSentenceBtn.classList.remove('playing');
+        }
+        sentAudio.currentTime = 0;
+        sentAudio.play().then(() => {
+            sentBtn.classList.add('playing');
+            activeSentence = sentAudio;
+            activeSentenceBtn = sentBtn;
+        }).catch(() => {});
+    };
 }
 
 document.addEventListener('DOMContentLoaded', function() {
